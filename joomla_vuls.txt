@@ -1,0 +1,9 @@
+[+] vuls found! url: http://141.57.27.195, admin: admin1, password: $2y$10$fF.DZpAmAwD3v.DG23xADeU7M/3ywF2BUZlF60x1RVkWIefSaM4.G, email: minner@ftz.htwk-leipzig.de, session_id: no info!
+[+] vuls found! url: http://141.52.46.28, admin: admin, password: $P$DKxTy/3eYerMx2L.YcoN0v9irXjdVE1, email: adrien.aubert@bureauveritas.com, session_id: no info!
+[+] vuls found! url: http://141.244.188.11, admin: crocoCW, password: $2y$10$guXO96oCToQbaCUSlNSaZOuZIEMikQV9JMOYwVNNKdqIW48czgjJy, email: abdeltawaha74@gmail.com, session_id: no info!
+[+] vuls found! url: http://141.244.189.188, admin: Foodsecurity077, password: $2y$10$EFIP8NRiRLwsLnz4TgpNoerl07SIrIrXJ0TpjkCZQddRBpFvPpw2m, email: office@tp-media.at, session_id: no info!
+[+] vuls found! url: http://142.54.178.190, admin:  Peresypina, password: $2y$10$Nwylyw/S.0tBoD5cOnDa8uyftgXWavGaRgnWkUEFrvyPiSADKm1Fi, email: 00000051@list.ru, session_id: no info!
+[+] vuls found! url: http://142.4.209.170, admin:  arcflash, password: $2y$10$LTSB/BT7qUQPf0eLNqk2sOzLcOzinjcJL0BNL3AoKBSK7zc3j0My6, email: -steph-@web.de, session_id: no info!
+[+] vuls found! url: http://143.205.174.231, admin: quase, password: $P$D5OBty0BBLFdAeMmuU/clI/9.srVn2/, email: shekvl@gmail.com, session_id: no info!
+[+] vuls found! url: http://143.224.185.35, admin: 109846173, password: $P$D58yoAvJQS8GFBm82N8etVCdtiY69l/, email: aidyn@inexcbkz.com, session_id: no info!
+[+] vuls found! url: http://144.76.162.22, admin: queeg, password: $2y$10$Ix/ohnPk7gsCLmcj07o2qOZXf1f2Jy4abqVrOWuD6OXFfoJpJMiiC, email: dan.parry@virtuawebtech.co.uk, session_id: no info!
